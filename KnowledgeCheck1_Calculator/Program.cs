@@ -6,84 +6,76 @@ using System.Threading.Tasks;
 
 namespace KnowledgeCheck1_Calculator
 {
-   class Program
+    class Program
     {
 
-        public class Calculator
+        #region Number Finders
+
+        static bool findNumbers(string calcFunction, out int num1, out int num2)
         {
-            public int Add(int first, int second)
-            {
-                return first + second;
-            }
+            Console.WriteLine("Enter 2 integers to " + calcFunction);
+            var userNum1 = Console.ReadLine();
+            var userNum2 = Console.ReadLine();
 
-            public int Subtract(int first, int second)
+            if (int.TryParse(userNum1, out int num1Temp) && int.TryParse(userNum2, out int num2Temp))
             {
-                return first - second;
+                num1 = num1Temp;
+                num2 = num2Temp;
+                return true;
             }
-
-            public int Multiply(int first, int second)
+            else
             {
-                return second * first; // code I added
-            }
-
-            public double Divide(double first, double second)
-            {
-                return first / second;
+                Console.WriteLine("One or more of the numbers is not an int");
+                num1 = 0;
+                num2 = 0;
+                return false;
             }
         }
 
+        #endregion
+
+        #region Equation Method / Main Method
         static void Main(string[] args)
         {
 
             Console.WriteLine("Hello. Press 1 for addition, 2 for subtraction, 3 for multiplication, and 4 for division");
 
-            var input = Console.ReadLine();
+            var userInput = Console.ReadLine();
             var calculator = new Calculator();
 
-            switch (input)
+            switch (userInput)
             {
                 case "1":
-                    Console.WriteLine("Enter 2 integers to add");
-                    var addNumber1 = Console.ReadLine();
-                    var addNumber2 = Console.ReadLine();
-
-                    if (int.TryParse(addNumber1, out int addNumOne) && int.TryParse(addNumber2, out int addNumTwo))
+                    var success = findNumbers("add", out int num1, out int num2);
+                    if (success == true)
                     {
-                        Console.Write($"{addNumber1} + {addNumber2} = ");
-                        Console.Write(calculator.Add(addNumOne, addNumTwo));
-                    }
-                    else
-                    {
-                        Console.WriteLine("One or more of the numbers is not an int");
+                        Console.Write($"{num1} + {num2} = ");
+                        Console.Write(calculator.Add(num1, num2));
                     }
                     break;
 
                 case "2":
-                    Console.WriteLine("Enter 2 integers to subtract");
-                    var subtractNumber1 = Console.ReadLine();
-                    var subtractNumber2 = Console.ReadLine();
-
-                    if (int.TryParse(subtractNumber1, out int subNumOne) && int.TryParse(subtractNumber2, out int subNumTwo))
+                    success = findNumbers("subtract", out int subnum1, out int subnum2);
+                    if (success == true)
                     {
-                        Console.Write($"{subtractNumber1} - {subtractNumber2} = ");
-                        Console.Write(calculator.Subtract(subNumOne, subNumTwo));
-                    }
-                    else
-                    {
-                        Console.WriteLine("One or more of the numbers is not an int");
+                        Console.Write($"{subnum1} - {subnum2} = ");
+                        Console.Write(calculator.Subtract(subnum1, subnum2));
                     }
                     break;
 
                 case "3":
-                    // code I added
                     Console.WriteLine("Enter 2 integers to multiply");
-                    var multiplyNum1 = Console.ReadLine();
-                    var mulitplyNum2 = Console.ReadLine();
+                    var multiplyNumber1 = Console.ReadLine();
+                    var multiplyNumber2 = Console.ReadLine();
 
-                    if (int.TryParse(multiplyNum1, out int multNum1) && int.TryParse(mulitplyNum2, out int multNum2))
+                    if (int.TryParse(multiplyNumber1, out int multiNum1) && int.TryParse(multiplyNumber2, out int multiNum2))
                     {
-                        Console.Write($"{multiplyNum1} * {mulitplyNum2} = ");
-                        Console.Write(calculator.Multiply(multNum1, multNum2));
+                        Console.Write($"{multiplyNumber1} * {multiplyNumber2} = ");
+                        Console.Write(calculator.Multiply(multiNum1, multiNum2));
+                    }
+                    else
+                    {
+                        Console.WriteLine("One or more of the numbers is not an int");
                     }
                     break;
 
@@ -102,12 +94,40 @@ namespace KnowledgeCheck1_Calculator
                         Console.WriteLine("One or more of the numbers is not an int");
                     }
                     break;
-                    break;
 
                 default:
-                    Console.WriteLine("Unknown input");
+                    Console.WriteLine("Invalid Input");
                     break;
             }
         }
     }
+
+    #endregion
+
+    #region Calculator Return Method
+
+    public class Calculator
+    {
+        public int Add(int first, int second)
+        {
+            return first + second;
+        }
+
+        public int Subtract(int first, int second)
+        {
+            return first - second;
+        }
+
+        public int Multiply(int first, int second)
+        {
+            return first * second;
+        }
+
+        public double Divide(double first, double second)
+        {
+            return first / second;
+        }
+    }
+    #endregion
+
 }
